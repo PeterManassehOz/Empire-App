@@ -60,14 +60,14 @@ import UploadRoute from "./Routes/UploadRoute.js";
 import ChatRoute from "./Routes/ChatRoute.js";
 import MessageRoute from "./Routes/MessageRoute.js";
 import http from "http";  // Import http to work with socket.io
-import * as socketIo from "socket.io";
+import { Server as SocketIoServer } from "socket.io";  // Named import
 
 dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
 
-const io = socketIo.Server(server, {
+const io = new SocketIoServer(server, {
     cors: {
         origin: process.env.FRONTEND_URL,  // Use environment variable for frontend URL
         methods: ["GET", "POST"]
