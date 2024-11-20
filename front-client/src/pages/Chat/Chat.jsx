@@ -31,13 +31,24 @@ const Chat = () => {
     }, [sendMessage])
 
 
-    useEffect(()=>{
+    /*useEffect(()=>{
         socket.current = io("http://localhost:8800");
         socket.current.emit("new-user-add", user._id);
         socket.current.on("get-users", (users)=>{
             setOnlineUsers(users);
         })
-    }, [user])
+    }, [user])*/
+
+    useEffect(() => {
+        socket.current = io("http://localhost:8800");
+        console.log("Socket Connected: ", socket.current);
+        socket.current.emit("new-user-add", user._id);
+        socket.current.on("get-users", (users) => {
+            console.log("Online Users: ", users);
+            setOnlineUsers(users);
+        });
+    }, [user]);
+    
 
 
        // receive message from socket server
@@ -48,7 +59,7 @@ const Chat = () => {
         })
     }, [])
 
-    useEffect(()=>{
+   /* useEffect(()=>{
         const getChats = async()=> {
             try {
                 const {data} = await userChats(user._id)
@@ -60,6 +71,23 @@ const Chat = () => {
         }
         getChats()
     }, [user])
+    */
+
+    useEffect(() => {
+        const getChats = async () => {
+            try {
+                console.log("Fetching Chats for User ID: ", user._id);
+                const response = await userChats(user._id);
+                console.log("Raw API Response: ", response);
+                const { data } = response;
+                setChats(data);
+            } catch (error) {
+                console.log("Error Fetching Chats: ", error);
+            }
+        };
+        getChats();
+    }, [user]);
+    
 
     const checkOnlineStatus = (chat)=> {
         const chatMember = chat.members.find((member) => member !== user._id);
@@ -75,7 +103,7 @@ const Chat = () => {
                 <h2>Chats</h2>
                 <div className="Chat-list">
                     {chats.map((chat)=>(
-                        <div onClick={()=> setCurrentChat(chat)}>
+                        <div key={chat._id} onClick={()=> setCurrentChat(chat)}>
                             <Conversation data={chat} currentUserId ={user._id} online={checkOnlineStatus(chat)}/>
                         </div>
                     ))}
