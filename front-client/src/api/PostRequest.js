@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-    baseURL: "http://localhost:5000"
+    baseURL: "https://empire-app.onrender.com"
 });
 
 export const getTimelinePosts = (id) => API.get(`/post/${id}/timeline`);

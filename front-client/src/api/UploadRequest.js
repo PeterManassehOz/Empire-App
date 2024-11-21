@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-    baseURL: "http://localhost:5000"
+    baseURL: "https://empire-app.onrender.com"
 });
 
 export const uploadImage = (data) => API.post("/upload", data);
