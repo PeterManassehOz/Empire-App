@@ -69,8 +69,8 @@ const server = http.createServer(app);
 
 const io = new SocketIoServer(server, {
     cors: {
-        origin: process.env.FRONTEND_URL,  // Use environment variable for frontend URL
-        methods: ["GET", "POST"]
+        origin: "https://empire-app-jet.vercel.app",  // Use environment variable for frontend URL
+        methods: ["GET", "POST", "PUT", "DELETE"]
     }
 });
 
